@@ -15,6 +15,40 @@
             background-size: cover;
             height: 100vh;
         }
+
+        .personal_blog{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+            width: 600px;
+            background-color: #fffffffd;
+            padding: 10px;
+            box-shadow: 10px 10px 15px rgb(88, 137, 209);
+            border-radius: 20px 0px 20px 0px;
+            position: absolute;
+            top: 180px;
+        
+            
+        }
+        .alertt{
+            animation: showAlert 30s ease forwards;
+        }
+        @keyframes showAlert{
+            0%{
+                transform: translate(10%);
+            }
+            100%{
+                transform: translate(80%);
+            }
+        }
+        .close{
+            position: absolute;
+            top: 0;
+            right: 5px;
+            cursor: pointer;
+            font-size: 35px;;
+        }
     </style>
 </head>
 
@@ -29,38 +63,62 @@
             </div>
         </form>
         <div class="weather-status text-white text-center">
-            <img src="https://openweathermap.org/img/wn/02d@2x.png" alt="">
+            <img id="icon" src="https://openweathermap.org/img/wn/02d@2x.png" alt="">
             <h1 id="current_name">Dhaka</h1>
             <h3><span id="current_temp">38.06</span>&deg;C</h3>
             <h1 id="discreption" class="lead">Clouds</h1>
         </div>
     </div>
 
+    <div id="blog" class="personal_blog alertt">
+        <small>
+            <span id="hideBlog" class="close">&times;</span>
+            Hello, There.
+            I am <a href="https://www.facebook.com/don.israfil.9"> Israfil Hossen (CSE)</a>, a Professional Web Designer, having experience over 3+ years.
+            
+            I am an expert in HTML, CSS, Bootstrap, Javascript, Jquery, ReactJS,
+
+            The world is getting modernized and business and other services are becoming online based. That's why a creative and unique website is an important part to establish your existence on the WORLD WIDE WEB.
+            
+            I do my best to balance usability and function with stunning graphics and unique design
+        <br>
+        <a href="https://www.facebook.com/don.israfil.9"> contact us </a>
+    </small>
+    </div>
+
 
     <script>
         const button = document.getElementById('submit');
-        button.addEventListener('click', function(){
+        button.addEventListener('click', function () {
 
             const SearchCity = document.getElementById('inputValue').value;
             let apiKey = "90945550f96fb64ed21d35649e2cceb2"
             fetch(`https://api.openweathermap.org/data/2.5/weather?q=${SearchCity}&appid=${apiKey}`)
 
-            
-        .then(resp => resp.json())
-        .then(data => {
-            console.log(data)
 
-            const cityName = document.getElementById('current_name').innerText = data.name;
-            /*
-            we know  that 1deg c = 273.15
-            c = k-273
-            */
-            const temp = document.getElementById('current_temp').innerText =Math.round(data.main.temp - 273.15);
-            const desc = document.getElementById('discreption').innerText = data.weather[0].main;
+                .then(resp => resp.json())
+                .then(data => {
+                    console.log(data)
 
+                    const cityName = document.getElementById('current_name').innerText = data.name;
+                    /*
+                    we know  that 1deg c = 273.15
+                    c = k-273
+                    */
+                    const temp = document.getElementById('current_temp').innerText = Math.round(data.main.temp - 273.15);
+                    const desc = document.getElementById('discreption').innerText = data.weather[0].main;
 
+                    const iconCode = data.weather[0].icon;
+                    iconUrl = "http://openweathermap.org/img/w/" + iconCode + ".png";
+                    document.getElementById('icon').src = iconUrl;
+
+                })
+                .catch(err => alert('wrong city'))
         })
-        .catch(err => alert('wrong city'))
+
+        const personalBolog = document.getElementById('hideBlog');
+        personalBolog.addEventListener('click', function(){
+            document.getElementById('blog').style.display = 'none';
         })
 
     </script>
